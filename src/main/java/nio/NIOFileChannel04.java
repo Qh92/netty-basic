@@ -4,6 +4,13 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.channels.FileChannel;
 
+/**
+ * 使用transferFrom实现文件的拷贝
+ *
+ * @author Qh
+ * @version 1.0
+ * @date 2021-11-01 21:50
+ */
 public class NIOFileChannel04 {
     public static void main(String[] args)  throws Exception {
 
