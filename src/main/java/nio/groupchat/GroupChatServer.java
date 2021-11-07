@@ -32,7 +32,7 @@ public class GroupChatServer {
             selector = Selector.open();
             listenChannel = ServerSocketChannel.open();
             //绑定端口
-            listenChannel.socket().bind(new InetSocketAddress(6667));
+            listenChannel.socket().bind(new InetSocketAddress(PORT));
             //设置非阻塞
             listenChannel.configureBlocking(false);
             //将该listenChannel注册到selector
