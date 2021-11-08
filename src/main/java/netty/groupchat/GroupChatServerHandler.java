@@ -9,6 +9,8 @@ import io.netty.util.concurrent.GlobalEventExecutor;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Qh
@@ -16,6 +18,11 @@ import java.time.format.DateTimeFormatter;
  * @date 2021-11-07 20:58
  */
 public class GroupChatServerHandler extends SimpleChannelInboundHandler<String> {
+
+    /**
+     * 如果想实现点对点发送，可以使用Map来存储
+     */
+    private static Map<String,Channel> channels = new HashMap<>();
 
     /**
      * 定义一个channel组，管理所有的channel
@@ -40,6 +47,8 @@ public class GroupChatServerHandler extends SimpleChannelInboundHandler<String> 
          */
         channelGroup.writeAndFlush("[客户端] : " + channel.remoteAddress() + " 加入聊天[" + LocalDateTime.now().format(formatter) + "]\n");
         channelGroup.add(channel);
+
+        channels.put("id",channel);
     }
 
     /**
