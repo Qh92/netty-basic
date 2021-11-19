@@ -17,18 +17,19 @@ public class MyClientHandler extends SimpleChannelInboundHandler<MessageProtocol
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, MessageProtocol msg) throws Exception {
-        /*byte[] bytes = new byte[msg.readableBytes()];
-        msg.readBytes(bytes);
-        String message = new String(bytes, CharsetUtil.UTF_8);
-        System.out.println("客户端接收到消息: " + message);
-        System.out.println("客户端接收到消息的次数: " + (++count));*/
+
+        int length = msg.getLength();
+        byte[] content = msg.getContent();
+        String message = new String(content, CharsetUtil.UTF_8);
+        System.out.println("客户端接收到消息: 内容 : " + message + " 长度 : " + length);
+        System.out.println("客户端接收到消息的次数: " + (++count));
 
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         //客户端发送10条数据
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 5; i++) {
             String message = "hello,服务器,我是客户端" + i;
             byte[] bytes = message.getBytes(CharsetUtil.UTF_8);
             int length = bytes.length;

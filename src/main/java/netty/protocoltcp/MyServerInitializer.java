@@ -16,6 +16,8 @@ public class MyServerInitializer extends ChannelInitializer<SocketChannel> {
         ChannelPipeline pipeline = ch.pipeline();
         //解码器
         pipeline.addLast(new MyMessageDecoder());
+        //编码器
+        pipeline.addLast(new MyMessageEncoder());
         pipeline.addLast(new MyServerHandler());
     }
 }

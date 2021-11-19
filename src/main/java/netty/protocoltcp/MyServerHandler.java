@@ -30,8 +30,15 @@ public class MyServerHandler extends SimpleChannelInboundHandler<MessageProtocol
         System.out.println("服务器端接收到消息包数量: " + (++count));
 
         //回送数据给客户端
-        /*ByteBuf buf = Unpooled.copiedBuffer(UUID.randomUUID().toString() + " ", CharsetUtil.UTF_8);
-        ctx.writeAndFlush(buf);*/
+        String response = UUID.randomUUID().toString();
+        int len = response.getBytes(CharsetUtil.UTF_8).length;
+        //构建一个协议包
+        MessageProtocol responseMessage = new MessageProtocol();
+        responseMessage.setContent(response.getBytes(CharsetUtil.UTF_8));
+        responseMessage.setLength(len);
+
+        ctx.writeAndFlush(responseMessage);
+
     }
 
 
