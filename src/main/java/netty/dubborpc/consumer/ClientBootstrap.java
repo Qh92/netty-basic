@@ -4,6 +4,8 @@ import netty.dubborpc.netty.NettyClient;
 import netty.dubborpc.provider.HelloServiceImpl;
 import netty.dubborpc.publicinterface.HelloService;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * 客户端启动器
  * 
@@ -21,9 +23,17 @@ public class ClientBootstrap {
         //创建代理对象
         HelloService service = (HelloService)consumer.getBean(HelloService.class, PROTOCOL);
 
-        String result = service.hello("你好,dubbo.....");
+        for (;;){
+            try {
+                TimeUnit.SECONDS.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            String result = service.hello("你好,dubbo.....");
+            System.out.println("调用的结果 : " + result);
+        }
 
-        System.out.println("调用的结果 : " + result);
+
 
     }
 }

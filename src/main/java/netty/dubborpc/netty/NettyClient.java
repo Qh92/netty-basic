@@ -37,12 +37,9 @@ public class NettyClient {
      */
     public Object getBean(final Class<?> serviceClass,final String providerName) {
         return Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(), new Class<?>[]{serviceClass}, (proxy, method, args) -> {
-            System.out.println("into....");
             if (client == null) {
                 initClient();
             }
-            System.out.println("进入代理对象");
-            System.out.println(Arrays.toString(args));
             //发送给提供方的消息，providerName 协议头，args[0] 具体发送的消息
             client.setParam(providerName + args[0]);
             return executorService.submit(client).get();
@@ -55,7 +52,7 @@ public class NettyClient {
      */
     private static void initClient() {
         client = new NettyClientHandler();
-        NioEventLoopGroup group = new NioEventLoopGroup(1);
+        NioEventLoopGroup group = new NioEventLoopGroup();
 
         Bootstrap bootstrap = new Bootstrap();
         try {
@@ -68,16 +65,15 @@ public class NettyClient {
                             ChannelPipeline pipeline = ch.pipeline();
                             pipeline.addLast(new StringDecoder());
                             pipeline.addLast(new StringEncoder());
-                            pipeline.addLast(new NettyClientHandler());
+                            pipeline.addLast(client);
                         }
                     });
 
-            ChannelFuture channelFuture = bootstrap.connect("127.0.0.1", 8001).sync();
-            channelFuture.channel().closeFuture().sync();
+            bootstrap.connect("127.0.0.1", 8001).sync();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
-            group.shutdownGracefully();
+            //group.shutdownGracefully();
         }
     }
 

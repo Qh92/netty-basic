@@ -13,12 +13,14 @@ import netty.dubborpc.publicinterface.HelloService;
  */
 public class HelloServiceImpl implements HelloService {
 
+    private int count = 0;
+
 
     @Override
     public String hello(String msg) {
         System.out.println("服务提供方收到消费方的消息 : " + msg);
         if (msg != null) {
-            return "你好，客户端，服务端已收到消息 : [" + msg +"]";
+            return "你好，客户端，服务端已收到消息 : [" + msg +"] 第" + (++count) + "次";
         }else {
             return "你好，客户端，服务端已收到消息";
         }

@@ -22,12 +22,14 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter implements 
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        System.out.println("channelActive 被调用");
         context = ctx;
         
     }
 
     @Override
     public synchronized void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        System.out.println("channelRead 被调用");
         result = msg.toString();
         notify();
     }
@@ -45,12 +47,15 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter implements 
      */
     @Override
     public synchronized Object call() throws Exception {
+        System.out.println("call1 被调用");
         context.writeAndFlush(param);
         wait();
+        System.out.println("call2 被调用");
         return result;
     }
 
     public void setParam(String param) {
+        System.out.println("setParam 被调用");
         this.param = param;
     }
 }
